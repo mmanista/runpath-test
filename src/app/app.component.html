@@ -1,0 +1,46 @@
+<div class="container top-padded">
+    <div class="row row-bottom-padded">
+        <!-- just to show that col-xs-12 is not the only solution I can come up with :) -->
+        <div class="col-sm-offset-2 col-sm-8 col-xs-12 text-center">
+            <h2>Welcome to Runpath Angular test!</h2>
+        </div>
+    </div>
+    <div class="row row-bottom-padded">
+        <div class="col-xs-12">
+            <label for="filterInput" class="input-label">Filter items</label>
+            <input type="text" id="filterInput" class="input" placeholder="Filter entries by title" [(ngModel)]="title">
+        </div>
+    </div>
+    <div class="row row-bottom-padded">
+        <div class="col-xs-2">
+            <strong>Thumbnail (click to show full image)</strong>
+        </div>
+        <div class="col-xs-10">
+            <strong>Title</strong>
+        </div>
+    </div>
+    <hr class="row">
+    <div class="row row-odd-even row-bottom-padded"
+         *ngFor="let singleImage of images | filterByProperty : 'title' : title | paginate: { itemsPerPage: 10, currentPage: p }"
+    >
+        <div class="col-xs-2">
+            <img class="image-thumbnail" src="{{singleImage.thumbnailUrl}}" (click)="showBigImage(singleImage)"/>
+        </div>
+        <div class="col-xs-10">
+            <span>{{singleImage.title}}</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 text-center">
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+    </div>
+</div>
+
+
+<div class="blackout-overlay overlay-hidden" #bigImageContainer>
+    <div class="close-button" (click)="hideBigImage()">&#x2716;</div>
+    <img src="{{bigImage.url}}" *ngIf="bigImage">
+</div>
+
+<router-outlet></router-outlet>
